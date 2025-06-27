@@ -1,5 +1,75 @@
 ---
-description:
-globs:
-alwaysApply: false
+description: 
+globs: 
+alwaysApply: true
 ---
+To define the project scope for your Personal Development Dashboard within a tool like Cursor, you'll want a ruleset that clearly outlines what's in and out of scope, along with key deliverables and constraints. Here's a ruleset you can adapt:
+
+```
+# Project Scope Ruleset: Personal Development Dashboard
+
+## 1. Core Project Definition
+
+* **In Scope:**
+    * Development of an AI-powered personal dashboard web application.
+    * Tracking and improvement across fitness, finances, mental well-being (meditation, prayer, journaling), and daily routines.
+    * Integration with Google Calendar for activity and health data synchronization.
+    * Manual data input via a React web interface.
+    * Design adhering to a white/grey/black color scheme with orange accents, prioritizing ease of use, clarity, and visual insights.
+    * Scalability considerations for future multi-user support.
+    * Initial development for personal use, serving as a foundation for broader application.
+
+* **Out of Scope (for initial phases):**
+    * Direct development of native mobile applications for iOS/Android (mobile app bridge for HealthKit is a future expansion, not initial scope).
+    * Integration with health platforms other than Apple Health (planned for Milestone 4) and Google Calendar (Milestone 1).
+    * Complex social features or community functionalities (focus is on personal insights).
+    * Real-time financial transactions or direct control over financial accounts (dashboard for tracking and insights only).
+    * Medical or diagnostic advice (insights are for personal development, not clinical use).
+
+## 2. Key Deliverables by Milestone
+
+### Milestone 1: Dashboard MVP
+* Fully functional React-based dashboard with specified widgets (daily steps, calories, mood, net worth, journal entries, prayer streaks).
+* Working manual data input.
+* Successful Google Calendar integration for data synchronization.
+* Basic user authentication via Google login.
+* Backend (PostgreSQL or MongoDB) with a clean, functional schema.
+
+### Milestone 2: AI Insight Engine
+* Implementation of OpenAI API for weekly summaries (mood, fitness, financial, journal analysis).
+* Generation of routine and goal suggestions based on trends.
+* Development of burnout/fatigue prediction using activity data.
+* AI responses that are concise, readable, and actionable.
+
+### Milestone 3: Home Assistant Integration
+* Successful integration with Home Assistant API for data retrieval from smart home devices/sensors.
+* Ability to log specific events/activities from Home Assistant into the dashboard.
+* Proof-of-concept for triggering automations in Home Assistant based on dashboard insights.
+
+### Milestone 4: Future Expansion (Planned, not initial scope)
+* Mobile app bridge for HealthKit (iOS).
+* Push notifications and reminders.
+* Multi-user support architecture.
+* Custom AI fine-tuning with user history.
+
+## 3. Technical Constraints & Guidelines
+
+* **Frontend:** React (Vite + TailwindCSS) must be used.
+* **Backend:** .NET Web API is the primary choice; Node.js is an acceptable alternative only if .NET presents unresolvable blockers.
+* **Database:** PostgreSQL or MongoDB must be used.
+* **AI:** OpenAI API is the designated solution for AI insights.
+* **Integrations:** Adherence to Google Calendar API, HealthKit API (when applicable), and Home Assistant API documentation.
+* **Development Environment:** Standardized tooling and version control (e.g., Git).
+
+## 4. Resource Allocation & Prioritization
+
+* Development efforts will prioritize features within the current milestone before moving to the next.
+* Bug fixes and critical performance issues take precedence over new feature development within an active milestone.
+* Feedback from the primary user (developer) will be prioritized for iterations and refinements.
+
+## 5. Exclusions & Clarifications
+
+* Any feature or integration not explicitly listed in the "In Scope" or "Key Deliverables" sections is considered out of scope for the current iteration of the project.
+* Changes to core technology stack (React, .NET/Node.js, PostgreSQL/MongoDB, OpenAI API) require re-evaluation of project scope and potential timeline adjustments.
+
+```
