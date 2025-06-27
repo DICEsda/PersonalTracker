@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import { motion } from 'framer-motion';
+import type { FC } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { MetricCard } from './MetricCard';
 
 type Metric = {
@@ -16,16 +16,22 @@ type DashboardGridProps = {
 };
 
 export const DashboardGrid: FC<DashboardGridProps> = ({ metrics, onMetricClick }) => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-4xl px-4">
-    {metrics.map((metric) => (
-      <motion.div
-        key={metric.key}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.97 }}
-        className="flex"
-      >
-        <MetricCard metric={metric} onClick={() => onMetricClick(metric)} />
-      </motion.div>
-    ))}
-  </div>
+  <AnimatePresence>
+    <div className="w-full flex justify-center">
+      <div className="flex flex-wrap gap-8 w-full max-w-screen-lg justify-center items-stretch">
+        {metrics.map((metric, idx) => (
+          <motion.div
+            key={metric.key}
+            initial={{ opacity: 0, scale: 0.95, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 30 }}
+            transition={{ duration: 0.4, delay: idx * 0.08, type: 'spring', stiffness: 80 }}
+            className="flex-1 min-w-[260px] max-w-[350px] flex"
+          >
+            <MetricCard metric={metric} onClick={() => onMetricClick(metric)} />
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  </AnimatePresence>
 ); 
