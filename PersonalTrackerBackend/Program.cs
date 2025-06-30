@@ -1,8 +1,38 @@
+using PersonalTrackerBackend.Services;
+using PersonalTrackerBackend.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+// Add CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+// Add HTTP Client for GoCardlessService
+builder.Services.AddHttpClient();
+
+// Add Entity Framework and Database
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ?? 
+                     "Data Source=Data/personaltracker.db"));
+
+// Register Services
+builder.Services.AddScoped<IGoogleCalendarService, GoogleCalendarService>();
+builder.Services.AddScoped<DataService>();
+
+// Add Controllers
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -13,6 +43,19 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Use CORS
+app.UseCors("AllowReactApp");
+
+// Ensure database is created
+using (var scope = app.Services.CreateScope())
+{
+    var dataService = scope.ServiceProvider.GetRequiredService<DataService>();
+    await dataService.EnsureDatabaseCreatedAsync();
+}
+
+// Map Controllers
+app.MapControllers();
 
 var summaries = new[]
 {

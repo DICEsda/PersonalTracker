@@ -11,9 +11,12 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
+    "axios": "^1.6.0",
+    "date-fns": "^2.30.0",
     "framer-motion": "^12.19.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-router-dom": "^6.8.0",
     "recharts": "^3.0.2",
     "tailwindcss": "^4.1.11"
   },
@@ -29,5 +32,10 @@
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.34.1",
     "vite": "^7.0.0"
+  },
+  "server": {
+    "proxy": {
+      "/api": "http://localhost:5223"
+    }
   }
 }

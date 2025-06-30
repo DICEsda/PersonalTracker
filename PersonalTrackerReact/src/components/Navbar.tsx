@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 const navItems = [
   { name: 'Dashboard', path: '/' },
   { name: 'Fitness', path: '/fitness' },
-  { name: 'Finances', path: '/finances' },
   { name: 'Mindfulness', path: '/mindfulness' },
+  { name: 'Calendar', path: '/calendar' },
 ];
 
 export function Navbar() {

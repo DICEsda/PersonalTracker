@@ -3,6 +3,8 @@ import './index.css'
 import { DashboardGrid } from './components/DashboardGrid'
 import { MetricGraphModal } from './components/MetricGraphModal'
 import { Navbar } from './components/Navbar'
+import { GoogleCalendar } from './components/GoogleCalendar'
+import { AuthCallback } from './components/AuthCallback'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -13,7 +15,7 @@ export type Metric = {
   value: number | string;
   color: string;
   data: { date: string; value: number }[];
-  category: 'fitness' | 'finances' | 'mindfulness';
+  category: 'fitness' | 'mindfulness';
   icon?: string;
 };
 
@@ -84,74 +86,6 @@ const allMetrics: Metric[] = [
       { date: 'Fri', value: 0 },
       { date: 'Sat', value: 1 },
       { date: 'Sun', value: 1 },
-    ],
-  },
-  {
-    key: 'networth',
-    label: 'Net Worth',
-    value: '$12,500',
-    color: 'bg-emerald-500',
-    category: 'finances',
-    icon: '💰',
-    data: [
-      { date: 'Mon', value: 12000 },
-      { date: 'Tue', value: 12100 },
-      { date: 'Wed', value: 12200 },
-      { date: 'Thu', value: 12300 },
-      { date: 'Fri', value: 12400 },
-      { date: 'Sat', value: 12500 },
-      { date: 'Sun', value: 12500 },
-    ],
-  },
-  {
-    key: 'investments',
-    label: 'Investments',
-    value: '$5,000',
-    color: 'bg-blue-500',
-    category: 'finances',
-    icon: '📈',
-    data: [
-      { date: 'Mon', value: 5000 },
-      { date: 'Tue', value: 5000 },
-      { date: 'Wed', value: 5000 },
-      { date: 'Thu', value: 5000 },
-      { date: 'Fri', value: 5000 },
-      { date: 'Sat', value: 5000 },
-      { date: 'Sun', value: 5000 },
-    ],
-  },
-  {
-    key: 'savings',
-    label: 'Monthly Savings',
-    value: '$1,200',
-    color: 'bg-green-500',
-    category: 'finances',
-    icon: '🏦',
-    data: [
-      { date: 'Mon', value: 1000 },
-      { date: 'Tue', value: 1100 },
-      { date: 'Wed', value: 1200 },
-      { date: 'Thu', value: 1200 },
-      { date: 'Fri', value: 1200 },
-      { date: 'Sat', value: 1200 },
-      { date: 'Sun', value: 1200 },
-    ],
-  },
-  {
-    key: 'expenses',
-    label: 'Expenses',
-    value: '$800',
-    color: 'bg-red-500',
-    category: 'finances',
-    icon: '💸',
-    data: [
-      { date: 'Mon', value: 100 },
-      { date: 'Tue', value: 200 },
-      { date: 'Wed', value: 100 },
-      { date: 'Thu', value: 100 },
-      { date: 'Fri', value: 100 },
-      { date: 'Sat', value: 100 },
-      { date: 'Sun', value: 100 },
     ],
   },
   {
@@ -293,103 +227,6 @@ function Fitness() {
   );
 }
 
-// Finances Page - Grid Layout with Cards
-function Finances() {
-  const financeMetrics = allMetrics.filter(m => m.category === 'finances');
-  const [selectedMetric, setSelectedMetric] = useState<Metric | null>(null);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-stone-900 dark:to-stone-800 p-8">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
-        >
-          <h1 className="text-5xl font-bold text-stone-800 dark:text-stone-100 mb-4">Financial Overview</h1>
-          <p className="text-xl text-stone-600 dark:text-stone-300">Monitor your wealth and spending</p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-6">
-            {financeMetrics.slice(0, 2).map((metric, idx) => (
-              <motion.div
-                key={metric.key}
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                whileHover={{ scale: 1.02 }}
-                className="bg-white dark:bg-stone-800 rounded-2xl shadow-lg p-6 cursor-pointer border border-stone-200 dark:border-stone-700"
-                onClick={() => setSelectedMetric(metric)}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <span className="text-2xl">{metric.icon}</span>
-                    <div>
-                      <h3 className="text-lg font-semibold text-stone-800 dark:text-stone-100">{metric.label}</h3>
-                      <p className="text-2xl font-bold text-stone-900 dark:text-stone-50">{metric.value}</p>
-                    </div>
-                  </div>
-                  <div className={`w-4 h-4 rounded-full ${metric.color}`}></div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          
-          <div className="space-y-6">
-            {financeMetrics.slice(2).map((metric, idx) => (
-              <motion.div
-                key={metric.key}
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                whileHover={{ scale: 1.02 }}
-                className="bg-white dark:bg-stone-800 rounded-2xl shadow-lg p-6 cursor-pointer border border-stone-200 dark:border-stone-700"
-                onClick={() => setSelectedMetric(metric)}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <span className="text-2xl">{metric.icon}</span>
-                    <div>
-                      <h3 className="text-lg font-semibold text-stone-800 dark:text-stone-100">{metric.label}</h3>
-                      <p className="text-2xl font-bold text-stone-900 dark:text-stone-50">{metric.value}</p>
-                    </div>
-                  </div>
-                  <div className={`w-4 h-4 rounded-full ${metric.color}`}></div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {selectedMetric && (
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-8 bg-white dark:bg-stone-800 rounded-2xl shadow-xl p-8 border border-stone-200 dark:border-stone-700"
-          >
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-4">
-                <span className="text-3xl">{selectedMetric.icon}</span>
-                <h2 className="text-2xl font-bold text-stone-900 dark:text-stone-50">{selectedMetric.label}</h2>
-              </div>
-              <button
-                onClick={() => setSelectedMetric(null)}
-                className="text-stone-400 hover:text-stone-600 dark:hover:text-stone-50 text-2xl"
-              >
-                ×
-              </button>
-            </div>
-            <div className="h-80">
-              <MetricGraph metric={selectedMetric} />
-            </div>
-          </motion.div>
-        )}
-      </div>
-    </div>
-  );
-}
-
 // Mindfulness Page - Circular Layout
 function Mindfulness() {
   const mindfulnessMetrics = allMetrics.filter(m => m.category === 'mindfulness');
@@ -457,7 +294,7 @@ function Mindfulness() {
 
 // Dashboard Page - Customizable with Metric Selection
 function Dashboard() {
-  const [selectedMetrics, setSelectedMetrics] = useState<string[]>(['steps', 'networth', 'mood']);
+  const [selectedMetrics, setSelectedMetrics] = useState<string[]>(['steps', 'mood']);
   const [selectedMetric, setSelectedMetric] = useState<Metric | null>(null);
   const [showMetricSelector, setShowMetricSelector] = useState(false);
 
@@ -569,7 +406,7 @@ function Dashboard() {
 // Add a MetricGraph component for the chart only
 function MetricGraph({ metric }: { metric: Metric }) {
   // Helper functions for stats
-  const average = (arr: number[]) => arr.length ? Math.round(arr.reduce((a, b) => a + b, 0) / arr.length) : 0;
+  const average = (arr: number[]) => arr.length ? Math.round(arr.reduce((a: number, b: number) => a + b, 0) / arr.length) : 0;
   const sum = (arr: number[]) => arr.reduce((a, b) => a + b, 0);
   const streak = (arr: (number | string)[]) => {
     let max = 0, cur = 0;
@@ -579,15 +416,11 @@ function MetricGraph({ metric }: { metric: Metric }) {
     }
     return max;
   };
-  const values = metric.data.map(d => Number(d.value));
+  const values = metric.data.map(d => Number(d.value)).filter(v => !isNaN(v));
   const isMood = metric.label.toLowerCase().includes('mood');
   const isSteps = metric.label.toLowerCase().includes('step');
   const isCalories = metric.label.toLowerCase().includes('calorie');
   const isActive = metric.label.toLowerCase().includes('active');
-  const isNetWorth = metric.label.toLowerCase().includes('net worth');
-  const isSavings = metric.label.toLowerCase().includes('saving');
-  const isExpenses = metric.label.toLowerCase().includes('expense');
-  const isInvestments = metric.label.toLowerCase().includes('invest');
   const isJournal = metric.label.toLowerCase().includes('journal');
   const isPrayer = metric.label.toLowerCase().includes('prayer');
   const isMeditation = metric.label.toLowerCase().includes('meditation');
@@ -607,22 +440,6 @@ function MetricGraph({ metric }: { metric: Metric }) {
             <Tooltip contentStyle={{ background: '#fafaf9', color: '#292524', borderColor: '#a8a29e' }} wrapperStyle={{ borderRadius: '0.75rem' }} formatter={v => moodEmojis[v - 1] || v} />
             <Line type="monotone" dataKey="value" stroke="#57534e" strokeWidth={3} dot={{ r: 7, fill: '#57534e' }} />
           </LineChart>
-        ) : isNetWorth || isSavings || isInvestments ? (
-          <AreaChart data={metric.data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="0" stroke="#fafaf9" />
-            <XAxis dataKey="date" stroke="#78716c" />
-            <YAxis stroke="#78716c" />
-            <Tooltip contentStyle={{ background: '#fafaf9', color: '#292524', borderColor: '#a8a29e' }} wrapperStyle={{ borderRadius: '0.75rem' }} />
-            <Area type="monotone" dataKey="value" fill="#a8a29e55" stroke="#a8a29e" strokeWidth={2} />
-          </AreaChart>
-        ) : isExpenses ? (
-          <LineChart data={metric.data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="0" stroke="#fafaf9" />
-            <XAxis dataKey="date" stroke="#78716c" />
-            <YAxis stroke="#78716c" />
-            <Tooltip contentStyle={{ background: '#fafaf9', color: '#292524', borderColor: '#a8a29e' }} wrapperStyle={{ borderRadius: '0.75rem' }} />
-            <Line type="monotone" dataKey="value" stroke="#ef4444" strokeWidth={3} dot={{ r: 5, fill: '#ef4444' }} />
-          </LineChart>
         ) : (
           <LineChart data={metric.data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="0" stroke="#fafaf9" />
@@ -637,8 +454,6 @@ function MetricGraph({ metric }: { metric: Metric }) {
       <div className="mt-2 text-sm text-stone-600 dark:text-stone-300 flex flex-wrap gap-4">
         {isMood && <span>Average: {average(values)} {moodEmojis[average(values) - 1]}</span>}
         {(isSteps || isCalories || isActive) && <span>Average: {average(values).toLocaleString()}</span>}
-        {(isNetWorth || isSavings || isInvestments) && <span>Total: {typeof metric.value === 'string' ? metric.value : sum(values).toLocaleString()}</span>}
-        {isExpenses && <span>Total: {sum(values).toLocaleString()}</span>}
         {(isJournal || isPrayer || isMeditation) && <span>Streak: {streak(values)}</span>}
       </div>
     </div>
@@ -660,8 +475,9 @@ function AnimatedRoutes() {
         <Routes location={location}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/fitness" element={<Fitness />} />
-          <Route path="/finances" element={<Finances />} />
           <Route path="/mindfulness" element={<Mindfulness />} />
+          <Route path="/calendar" element={<GoogleCalendar />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
         </Routes>
       </motion.main>
     </AnimatePresence>
