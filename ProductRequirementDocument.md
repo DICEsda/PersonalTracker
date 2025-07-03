@@ -1,80 +1,142 @@
-# Personal Development Dashboard
+# Product Requirements Document (PRD)
+
+**Product Name**: Personal AI Dashboard  
+**Version**: 0.1  
+**Date**: 2025-07-04  
+**Owner**: Jahye Ali Hussen
 
 ---
 
-This project aims to create an **AI-powered personal dashboard** designed to help users monitor and enhance various aspects of their lives, including **fitness, finances, mental well-being** (meditation, prayer, journaling), and **daily routines**. The system will integrate with **Google Calendar** and, eventually, **Apple Health** to automatically sync health and activity data. It will also support manual data input through a clean **React web interface**.
+## 1. Overview
 
-While initially developed for personal use, the dashboard is built with **scalability** in mind for future users. The design will feature a **white/grey/black color scheme with orange accents**, prioritizing ease of use, clarity, and insightful visualizations.
+This project aims to develop a **full-stack AI-powered personal dashboard** designed to help users monitor, understand, and improve key aspects of their lives—such as **fitness, finances, mental well-being**, and **daily routines**. All user data will be tracked automatically via external APIs when possible, or manually through the app itself. AI-generated insights will support habit formation and reflection.
 
-## Project Details
-
----
-
-* **Level:** Medium
-* **Type of Project:** Full-stack Web Application, AI Insights, Personal Analytics
-
-## Skills Required
+Though initially developed for personal use, the solution is designed with future **scalability and public usability** in mind.
 
 ---
 
-* **Frontend:** React (Vite + TailwindCSS)
-* **Backend:** .NET Web API (Node.js is an alternative)
-* **Database:** PostgreSQL or MongoDB (for scalability)
-* **AI:** OpenAI API (for natural language summaries + insights)
-* **Integrations:** Google Calendar API, HealthKit API (optional, later), Home Assistant API
+## 2. Goals
 
-## Key Features
+- Centralize life tracking across fitness, finances, routines, and mindfulness.
+- Enable **habit consistency** and reflection via AI-generated insights.
+- Provide a simple and intuitive user experience with clean visualizations.
+- Establish a robust backend and frontend foundation for **future extensibility**.
+- Deliver a **portfolio-ready prototype within 1 week**.
 
 ---
 
-### Milestone 1: Dashboard MVP
+## 3. Key Features & Milestones
 
-The initial phase focuses on delivering a Minimum Viable Product with core dashboard functionalities:
+### Milestone 1: MVP Dashboard + Companion App
 
-* **React-based dashboard** with essential widgets for:
-    * Daily steps
-    * Calories
-    * Mood
-    * Net worth
-    * Journal entries
-    * Prayer streaks
-* Support for **manual and automatic data tracking**.
-* **Google Calendar integration**.
-* Simple **user authentication** via Google login.
-* **PostgreSQL or MongoDB backend** with a well-structured schema.
+- **Frontend (Web + Mobile)**  
+  - React web app (Vite + Tailwind)  
+  - React Native (Expo + Tailwind)  
+  - Light/dark theme with orange accents
+
+- **Widgets for**:  
+  - Daily steps  
+  - Calories  
+  - Mood tracking  
+  - Net worth / financial balance  
+  - Journal entries  
+  - Prayer streaks
+
+- **Manual and automatic tracking**  
+  - Input forms in app for mood, journal, prayer, and finances  
+  - Step and calorie tracking via integrations
+
+- **Authentication**: Google login (OAuth2)  
+- **Integrations**: Google Calendar API  
+- **Backend**:  
+  - .NET Web API (Node.js optional fallback)  
+  - MongoDB database
+
+---
 
 ### Milestone 2: AI Insight Engine
 
-This milestone introduces intelligent insights and summaries:
+- Weekly AI-generated summaries:
+  - Mood and mental patterns
+  - Physical activity trends
+  - Financial behavior
+  - Journal analysis (via NLP)
 
-* **Weekly summaries** of:
-    * Mood patterns
-    * Fitness activity
-    * Financial trends
-    * Journal analysis
-* **Routine and goal suggestions** based on user trends.
-* **Burnout or fatigue prediction** using activity data.
-* **Concise and readable AI responses**, focused on actionable usefulness.
-
-### Milestone 3: Home Assistant Integration
-
-This milestone focuses on integrating with Home Assistant for broader data collection and automation:
-
-* **Integration with Home Assistant API** to pull data from smart home devices and sensors (e.g., sleep tracking, environmental data, presence detection).
-* Ability to **log specific events or activities** from Home Assistant directly into the dashboard.
-* Potential for **triggering automations** within Home Assistant based on dashboard insights (e.g., adjusting lighting for mood, optimizing HVAC based on routine).
-
-### Milestone 4: Future Expansion
-
-Future enhancements will include:
-
-* Mobile app bridge for **HealthKit (iOS) integration**.
-* **Push notifications/reminders** for habit tracking.
-* **Multi-user support**.
-* Custom AI **fine-tuned with individual user history**.
-
-## Client Information
+- Actionable advice and routine suggestions  
+- AI tone: reflective and motivational  
+- Early burnout or inconsistency detection
 
 ---
 
-This project is currently being developed for personal use, with future plans for broader scalability. It is spearheaded by a developer and engineering student possessing a robust background in full-stack development, embedded systems, and personal optimization. The overarching goal is to seamlessly integrate AI with user-friendly UX, creating a powerful tool that empowers individuals to grow across various aspects of their lives, starting with the developer's own journey.
+### Milestone 3: Future Expansion
+
+- iOS HealthKit integration (via mobile app bridge)  
+- Push notifications for reminders and habits  
+- Multi-user support  
+- Custom AI fine-tuned per user history
+
+---
+
+### Milestone 4: Home Assistant Integration
+
+- API integration with Home Assistant to collect:
+  - Sleep data  
+  - Environment info (temperature, noise, presence)
+
+- Event logging from Home Assistant into dashboard  
+- Automation triggers (e.g., mood-based lighting suggestions)
+
+---
+
+## 4. Functional Requirements
+
+### Frontend
+
+- Responsive UI with modular components  
+- Dashboard displaying all active trackers and summaries  
+- Forms for user input (mood, finances, journal, etc.)  
+- Authentication flow (Google login)
+
+### Backend
+
+- REST API for:
+  - User profile
+  - Entry CRUD (steps, mood, journal, prayer, finances)
+  - Weekly summary aggregation
+
+- MongoDB schema design for flexibility
+
+### AI Integration
+
+- Connect to OpenAI API  
+- Summarize entries and generate weekly reports  
+- Accept context from user history and habits
+
+---
+
+## 5. Non-Functional Requirements
+
+- **Performance**: Mobile-friendly and lightweight load time  
+- **Scalability**: MongoDB for document-style flexibility  
+- **Maintainability**: Modular code with separation of concerns (MVC + service layer)  
+- **Security** (future): Plan for authentication tokens and encrypted storage if public  
+- **Accessibility**: Basic adherence to WCAG AA via contrast and layout
+
+---
+
+## 6. Design Guidelines
+
+- **Color scheme**: White/Grey/Black + Orange accents  
+- **Typography**: Clear, readable fonts (e.g., Inter or Roboto)  
+- **Tone**: Friendly, non-judgmental, and encouraging  
+- **Layout**: Widget-style cards with summary graphs and AI tips
+
+---
+
+## 7. Success Criteria
+
+- Fully functional MVP within 1 week  
+- At least 5 working widgets with proper data tracking  
+- AI-generated feedback on at least 3 domains (e.g., fitness, journaling, mood)  
+- Seamless Google login and Calendar sync  
+- Clear, portfolio-ready demo
