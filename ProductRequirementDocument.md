@@ -50,7 +50,6 @@ Though initially developed for personal use, the solution is designed with futur
 - **Integrations**: Google Calendar API  
 - **Backend**:  
   - .NET Web API (Node.js optional fallback)  
-  - MongoDB database
 
 ---
 
@@ -104,12 +103,10 @@ Though initially developed for personal use, the solution is designed with futur
   - Entry CRUD (steps, mood, journal, prayer, finances)
   - Weekly summary aggregation
 
-- MongoDB schema design for flexibility
-
 ### AI Integration
 
 - Connect to OpenAI API  
-- Summarize entries and generate weekly reports  
+- Summarize entries and generate weekly reports (Context Specific)
 - Accept context from user history and habits
 
 ---
