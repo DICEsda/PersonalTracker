@@ -15,6 +15,142 @@ public class GoogleCalendarController : ControllerBase
         _calendarService = calendarService;
     }
 
+    [HttpPost("authenticate")]
+    public async Task<ActionResult<AuthenticationResponse>> Authenticate([FromBody] AuthenticationRequest request)
+    {
+        try
+        {
+            switch (request.AuthType.ToLower())
+            {
+                case "credentials":
+                    return await AuthenticateWithCredentials(request.Email, request.Password ?? "");
+                
+                case "app_password":
+                    return await AuthenticateWithAppPassword(request.Email, request.AppPassword ?? "");
+                
+                case "oauth":
+                    return await InitiateOAuthFlow();
+                
+                default:
+                    return BadRequest(new AuthenticationResponse 
+                    { 
+                        Success = false, 
+                        Error = "Invalid authentication type" 
+                    });
+            }
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new AuthenticationResponse 
+            { 
+                Success = false, 
+                Error = $"Authentication error: {ex.Message}" 
+            });
+        }
+    }
+
+    [HttpPost("refresh")]
+    public async Task<ActionResult<AuthenticationResponse>> RefreshToken([FromBody] RefreshTokenRequest request)
+    {
+        try
+        {
+            var result = await _calendarService.RefreshAccessTokenAsync(request.RefreshToken);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new AuthenticationResponse 
+            { 
+                Success = false, 
+                Error = $"Token refresh error: {ex.Message}" 
+            });
+        }
+    }
+
+    [HttpPost("oauth/init")]
+    public async Task<ActionResult<AuthenticationResponse>> InitiateOAuth()
+    {
+        try
+        {
+            var result = await InitiateOAuthFlow();
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new AuthenticationResponse 
+            { 
+                Success = false, 
+                Error = $"OAuth initialization error: {ex.Message}" 
+            });
+        }
+    }
+
+    private Task<AuthenticationResponse> AuthenticateWithCredentials(string email, string password)
+    {
+        // Note: Direct password authentication is not supported by Google for security reasons
+        // This would typically redirect to OAuth or require app-specific passwords
+        
+        try
+        {
+            // For demonstration, we'll return a response indicating app password is needed
+            // In a real implementation, you might try OAuth or other methods
+            
+            return Task.FromResult(new AuthenticationResponse
+            {
+                Success = false,
+                RequiresAppPassword = true,
+                Error = "Google requires app-specific passwords for email/password authentication. Please enable 2FA and generate an app password, or use OAuth."
+            });
+        }
+        catch (Exception ex)
+        {
+            return Task.FromResult(new AuthenticationResponse 
+            { 
+                Success = false, 
+                Error = $"Credentials authentication failed: {ex.Message}" 
+            });
+        }
+    }
+
+    private async Task<AuthenticationResponse> AuthenticateWithAppPassword(string email, string appPassword)
+    {
+        try
+        {
+            // Attempt to authenticate using app-specific password
+            var result = await _calendarService.AuthenticateWithAppPasswordAsync(email, appPassword);
+            return result;
+        }
+        catch (Exception ex)
+        {
+            return new AuthenticationResponse 
+            { 
+                Success = false, 
+                Error = $"App password authentication failed: {ex.Message}" 
+            };
+        }
+    }
+
+    private Task<AuthenticationResponse> InitiateOAuthFlow()
+    {
+        try
+        {
+            var authUrl = _calendarService.GetOAuthUrlAsync().Result;
+            return Task.FromResult(new AuthenticationResponse
+            {
+                Success = true,
+                AuthUrl = authUrl
+            });
+        }
+        catch (Exception ex)
+        {
+            return Task.FromResult(new AuthenticationResponse 
+            { 
+                Success = false, 
+                Error = $"OAuth flow initiation failed: {ex.Message}" 
+            });
+        }
+    }
+
     [HttpGet("calendars")]
     public async Task<ActionResult<CalendarListResponse>> GetCalendars([FromHeader(Name = "Authorization")] string authorization)
     {

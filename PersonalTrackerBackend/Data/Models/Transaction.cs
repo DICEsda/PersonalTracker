@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PersonalTrackerBackend.Data.Models
 {
@@ -34,7 +35,27 @@ namespace PersonalTrackerBackend.Data.Models
         public DateTime Date { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         
-        // Navigation property
+        // Bank integration fields
+        public int? BankAccountId { get; set; }
+        
+        [MaxLength(255)]
+        public string? ExternalTransactionId { get; set; } // Salt Edge transaction ID
+        
+        public bool IsFromBank { get; set; } = false;
+        
+        [MaxLength(100)]
+        public string? TransactionType { get; set; } // debit, credit, fee, etc.
+        
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal? RunningBalance { get; set; }
+        
+        [MaxLength(500)]
+        public string? ExtraData { get; set; } // JSON for additional bank data
+        
+        // Navigation properties
         public virtual Account Account { get; set; } = null!;
+        
+        [ForeignKey("BankAccountId")]
+        public virtual BankAccount? BankAccount { get; set; }
     }
 } 

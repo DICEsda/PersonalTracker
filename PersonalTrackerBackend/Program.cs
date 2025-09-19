@@ -19,7 +19,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Add HTTP Client for GoCardlessService
+// Add HTTP Client for external services
 builder.Services.AddHttpClient();
 
 // Add Entity Framework and Database
@@ -30,6 +30,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Register Services
 builder.Services.AddScoped<IGoogleCalendarService, GoogleCalendarService>();
 builder.Services.AddScoped<DataService>();
+
+// Register Banking Services
+builder.Services.AddHttpClient<ISaltEdgeService, SaltEdgeService>();
+builder.Services.AddScoped<ISaltEdgeService, SaltEdgeService>();
+builder.Services.AddScoped<IBankingService, BankingService>();
+
+// Register AI Services
+builder.Services.AddScoped<AIInsightsService>();
 
 // Add Controllers
 builder.Services.AddControllers();

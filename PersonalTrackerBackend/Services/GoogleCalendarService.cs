@@ -14,6 +14,11 @@ public interface IGoogleCalendarService
     Task<GoogleCalendarEvent> CreateEventAsync(string calendarId, CreateEventRequest request, string accessToken);
     Task<GoogleCalendarEvent> UpdateEventAsync(string calendarId, UpdateEventRequest request, string accessToken);
     Task DeleteEventAsync(string calendarId, string eventId, string accessToken);
+    
+    // New authentication methods
+    Task<AuthenticationResponse> AuthenticateWithAppPasswordAsync(string email, string appPassword);
+    Task<AuthenticationResponse> RefreshAccessTokenAsync(string refreshToken);
+    Task<string> GetOAuthUrlAsync();
 }
 
 public class GoogleCalendarService : IGoogleCalendarService
@@ -169,5 +174,130 @@ public class GoogleCalendarService : IGoogleCalendarService
     {
         var service = CreateCalendarService(accessToken);
         await service.Events.Delete(calendarId, eventId).ExecuteAsync();
+    }
+
+    public Task<AuthenticationResponse> AuthenticateWithAppPasswordAsync(string email, string appPassword)
+    {
+        try
+        {
+            // Note: Google Calendar API doesn't support direct app password authentication
+            // App passwords are primarily for IMAP/SMTP and other legacy protocols
+            // We'll need to guide users to OAuth instead
+            
+            return Task.FromResult(new AuthenticationResponse
+            {
+                Success = false,
+                Error = "Google Calendar API requires OAuth authentication. App passwords are not supported for Calendar access. Please use the OAuth option.",
+                RequiresAppPassword = false
+            });
+        }
+        catch (Exception ex)
+        {
+            return Task.FromResult(new AuthenticationResponse
+            {
+                Success = false,
+                Error = $"App password authentication failed: {ex.Message}"
+            });
+        }
+    }
+
+    public async Task<AuthenticationResponse> RefreshAccessTokenAsync(string refreshToken)
+    {
+        try
+        {
+            // Implementation for refreshing OAuth tokens
+            // This would typically involve calling Google's token refresh endpoint
+            
+            var clientId = _configuration["GoogleCalendar:ClientId"];
+            var clientSecret = _configuration["GoogleCalendar:ClientSecret"];
+            
+            if (string.IsNullOrEmpty(clientId) || string.IsNullOrEmpty(clientSecret))
+            {
+                throw new InvalidOperationException("Google OAuth credentials not configured");
+            }
+
+            using var httpClient = new HttpClient();
+            var requestBody = new Dictionary<string, string>
+            {
+                {"client_id", clientId},
+                {"client_secret", clientSecret},
+                {"refresh_token", refreshToken},
+                {"grant_type", "refresh_token"}
+            };
+
+            var content = new FormUrlEncodedContent(requestBody);
+            var response = await httpClient.PostAsync("https://oauth2.googleapis.com/token", content);
+            
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                var tokenResponse = System.Text.Json.JsonSerializer.Deserialize<TokenResponse>(responseBody);
+                
+                return new AuthenticationResponse
+                {
+                    Success = true,
+                    AccessToken = tokenResponse?.access_token,
+                    RefreshToken = tokenResponse?.refresh_token ?? refreshToken // Use new refresh token if provided
+                };
+            }
+            else
+            {
+                var errorBody = await response.Content.ReadAsStringAsync();
+                return new AuthenticationResponse
+                {
+                    Success = false,
+                    Error = $"Token refresh failed: {errorBody}"
+                };
+            }
+        }
+        catch (Exception ex)
+        {
+            return new AuthenticationResponse
+            {
+                Success = false,
+                Error = $"Token refresh failed: {ex.Message}"
+            };
+        }
+    }
+
+    public Task<string> GetOAuthUrlAsync()
+    {
+        try
+        {
+            var clientId = _configuration["GoogleCalendar:ClientId"];
+            var redirectUri = _configuration["GoogleCalendar:RedirectUri"];
+            
+            if (string.IsNullOrEmpty(clientId) || string.IsNullOrEmpty(redirectUri))
+            {
+                throw new InvalidOperationException("Google OAuth configuration missing");
+            }
+
+            var scopes = "https://www.googleapis.com/auth/calendar";
+            var state = Guid.NewGuid().ToString(); // For security
+            
+            var authUrl = $"https://accounts.google.com/o/oauth2/v2/auth?" +
+                         $"client_id={Uri.EscapeDataString(clientId)}&" +
+                         $"redirect_uri={Uri.EscapeDataString(redirectUri)}&" +
+                         $"scope={Uri.EscapeDataString(scopes)}&" +
+                         $"response_type=code&" +
+                         $"access_type=offline&" +
+                         $"prompt=consent&" +
+                         $"state={state}";
+
+            return Task.FromResult(authUrl);
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException($"Failed to generate OAuth URL: {ex.Message}");
+        }
+    }
+
+    // Helper class for token response parsing
+    private class TokenResponse
+    {
+        public string? access_token { get; set; }
+        public string? refresh_token { get; set; }
+        public int expires_in { get; set; }
+        public string? token_type { get; set; }
     }
 } 

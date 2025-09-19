@@ -11,7 +11,7 @@ import type {
 const API_BASE_URL = 'http://localhost:5000/api';
 
 // Google OAuth configuration
-const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID';
+const GOOGLE_CLIENT_ID = 'GOOGLE_CLIENT_ID';
 const GOOGLE_SCOPES = ['https://www.googleapis.com/auth/calendar'];
 
 class GoogleCalendarApi {

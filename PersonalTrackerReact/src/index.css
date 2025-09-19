@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* Typography */
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   color-scheme: light dark;
@@ -9,12 +10,172 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Orange accent */
+  --primary-orange: #f97316; /* stone-compatible accent */
+  --primary-orange-hover: #ea580c;
+  --primary-orange-light: #fed7aa;
+  --primary-orange-dark: #c2410c;
+
+  /* Stone palette (light) */
+  --bg-primary: #fafaf9;   /* stone-50 */
+  --bg-secondary: #f5f5f4; /* stone-100 */
+  --bg-tertiary: #e7e5e4;  /* stone-200 */
+  --text-primary: #292524; /* stone-800 */
+  --text-secondary: #57534e; /* stone-600 */
+  --text-tertiary: #78716c; /* stone-500 */
+  --border-primary: #e7e5e4; /* stone-200 */
+  --border-secondary: #d6d3d1; /* stone-300 */
+}
+
+.dark {
+  /* Stone palette (dark) */
+  --bg-primary: #0c0a09;   /* stone-950 */
+  --bg-secondary: #1c1917; /* stone-900 */
+  --bg-tertiary: #292524;  /* stone-800 */
+  --text-primary: #fafaf9; /* stone-50 */
+  --text-secondary: #d6d3d1; /* stone-300 */
+  --text-tertiary: #a8a29e; /* stone-400 */
+  --border-primary: #44403c; /* stone-700 */
+  --border-secondary: #57534e; /* stone-600 */
+}
+
+/* Smooth theme transitions */
+* {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* Remove user selection only for UI elements, not content */
+button, .nav-item, .metric-card-header {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Allow text selection for content areas */
+.journal-content, .mood-note, textarea, input {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* Accessibility improvements */
+.focus-visible, *:focus-visible {
+  outline: 2px solid var(--primary-orange);
+  outline-offset: 2px;
+}
+
+/* Theme-aware button styles */
+.btn-primary {
+  background-color: var(--primary-orange);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-orange-hover);
+}
+
+.btn-secondary {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+}
+
+.btn-secondary:hover {
+  background-color: var(--border-primary);
+}
+
+/* Custom scrollbar for better UX */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+/* Loading spinner */
+.loading-spinner {
+  border: 2px solid var(--border-primary);
+  border-top: 2px solid var(--primary-orange);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Widget styles */
+.widget-card {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.widget-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.dark .widget-card {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.dark .widget-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+}
+
+/* Form styles */
+input, textarea, select {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--primary-orange);
+  box-shadow: 0 0 0 1px var(--primary-orange);
+}
+
+/* Modal backdrop */
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.dark .modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Enable text selection for specific elements */
+p, h1, h2, h3, h4, h5, h6, span, div {
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
 }
 
 a {
   font-weight: 500;
   color: #57534e;
   text-decoration: inherit;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
 }
 a:hover {
   color: #78716c;
@@ -25,14 +186,28 @@ body {
   min-width: 320px;
   min-height: 100vh;
   width: 100vw;
-  background: linear-gradient(135deg, #f5f5f4 0%, #e7e5e4 100%);
-  color: #292524;
+  background-color: #0c0a09; /* stone-950 */
+  color: #fafaf9; /* stone-50 */
+  /* Android safe area handling */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  /* Prevent overscroll bounce on Android */
+  overscroll-behavior: none;
+  /* Smooth scrolling */
+  scroll-behavior: smooth;
 }
 
 .app-bg {
   min-height: 100vh;
   width: 100vw;
-  background: linear-gradient(135deg, #f5f5f4 0%, #e7e5e4 100%);
+  background-color: #0c0a09;
+  /* Android safe area handling */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 
 .main-container {
@@ -41,6 +216,9 @@ body {
   margin-right: auto;
   padding-left: 1rem;
   padding-right: 1rem;
+  /* Ensure content doesn't overlap with safe areas */
+  padding-top: max(1rem, env(safe-area-inset-top));
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
 }
 
 h1 {
@@ -48,6 +226,7 @@ h1 {
   line-height: 1.1;
 }
 
+/* Touch-friendly button styles */
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -57,33 +236,92 @@ button {
   font-family: inherit;
   background-color: #f5f5f4;
   cursor: pointer;
-  transition: border-color 0.25s, background 0.25s;
+  transition: border-color 0.25s, background 0.25s, transform 0.1s;
+  /* Touch optimizations */
+  min-height: 44px;
+  min-width: 44px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 button:hover {
   border-color: #57534e;
   background: #e7e5e4;
+}
+button:active {
+  transform: scale(0.98);
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    color: #f5f5f4;
-    background-color: #18181b;
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.5em;
   }
-  body {
-    background: linear-gradient(135deg, #18181b 0%, #292524 100%);
-    color: #f5f5f4;
+  
+  .main-container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
-  .app-bg {
-    background: linear-gradient(135deg, #18181b 0%, #292524 100%);
+  
+  /* Ensure touch targets are large enough */
+  button, a, [role="button"] {
+    min-height: 48px;
+    min-width: 48px;
   }
-  a:hover {
-    color: #a8a29e;
+}
+
+/* Android-specific optimizations */
+@media screen and (max-width: 768px) {
+  /* Prevent zoom on input focus */
+  input, textarea, select {
+    font-size: 16px;
   }
-  button {
-    background-color: #292524;
+  
+  /* Smooth scrolling for Android */
+  * {
+    -webkit-overflow-scrolling: touch;
   }
+  
+  /* Optimize animations for mobile */
+  .animate-mobile {
+    will-change: transform;
+  }
+}
+
+/* Remove forced dark gradients; rely on .dark class */
+
+/* PWA installation prompt styles */
+.install-prompt {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 1rem;
+  z-index: 1000;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.install-prompt.show {
+  transform: translateY(0);
+}
+
+/* Loading spinner for Android */
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

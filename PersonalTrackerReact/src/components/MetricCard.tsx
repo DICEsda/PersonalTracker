@@ -6,6 +6,8 @@ type Metric = {
   label: string;
   value: number | string;
   data: { date: string; value: number }[];
+  category: 'fitness' | 'mindfulness' | 'financial';
+  icon?: string;
 };
 
 type MetricCardProps = {
@@ -23,9 +25,9 @@ export const MetricCard: FC<MetricCardProps> = ({ metric, onClick }) => (
     onClick={onClick}
     style={{ minHeight: '120px' }}
   >
-    {/* Icon Placeholder */}
+    {/* Icon */}
     <div className="w-12 h-12 rounded-xl bg-stone-200 dark:bg-stone-700 flex items-center justify-center text-stone-600 dark:text-stone-300 text-2xl mr-6 group-hover:bg-stone-300 dark:group-hover:bg-stone-600 transition-colors duration-200">
-      <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /></svg>
+      {metric.icon || <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /></svg>}
     </div>
     <div className="flex-1 flex flex-col justify-center">
       <div className="text-lg font-semibold mb-1 drop-shadow-sm">{metric.label}</div>
