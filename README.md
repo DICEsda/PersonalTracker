@@ -65,7 +65,6 @@ npm start
 
 ```powershell
 cd "./PersonalTrackerBackend"
-# If you use dotnet CLI
 dotnet restore
 dotnet build
 dotnet run
@@ -81,7 +80,7 @@ node ./bin/www
 
 Notes:
 - The backend may require connection strings and API keys (look in `appsettings.Development.json` and `GOOGLE_API_SETUP.md`).
-- For mobile native features, connect your device or use an emulator via Expo.
+- For mobile native features, connect device or use an emulator via Expo.
 
 ## Project structure (quick tour)
 
@@ -98,32 +97,5 @@ This repo contains unit and integration points in several places. Running tests 
 - For .NET: use `dotnet test` in the backend when tests are present.
 - For Node/JS: run `npm test` inside the related package folders.
 
-If you want me to add CI, test coverage, or a short demo script, tell me which component to prioritize.
 
-## How to present this project in interviews
 
-- Start with the high-level architecture (web, native, backend, microservice) and explain why each layer exists.
-- Walk through one end-to-end flow (e.g., create an account -> create an entry -> sync with Google Calendar).
-- Point to key files to demonstrate competence: a complex controller in the backend, a service class that calls external APIs, and a non-trivial UI component that manages state.
-
-## Contributing
-
-Contributions are welcome. Keep changes scoped, open PRs against `main`, and include tests for new logic where possible. If you want to contribute features or fixes, open an issue first to discuss the change.
-
-## License
-
-This project does not contain an explicit license file in the repository. If you'd like this to be open-source, add a `LICENSE` file (MIT is common) or let me know what license you prefer and I can add it.
-
-## Contact
-
-If you're an employer or collaborator reviewing this repository and want a demo or code walkthrough, reach out via the contact method on my GitHub profile or open an issue here — I will respond with a short guided demo or sample dataset.
-
----
-
-If you'd like, I can:
-
-- Add badges (build / tests / license),
-- Add a short GIF or screenshots and a minimal demo script, or
-- Add a CONTRIBUTING.md and a LICENSE file.
-
-Tell me which of those you'd like next and I'll add it.
