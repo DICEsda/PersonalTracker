@@ -24,7 +24,6 @@ Top-level folders (major components):
 - `PersonalTrackerNative/` — Native application (Expo / React Native + TypeScript).
 - `PersonalTrackerBackend/` — .NET backend (C#) with controllers, services, and EF Core data models.
 - `food-backend/` — Small Node/Express service used by the project (example microservice).
-- 
 ## Project structure 
 
 - `PersonalTrackerBackend/Controllers` — HTTP endpoints (read controllers to see API shape).
